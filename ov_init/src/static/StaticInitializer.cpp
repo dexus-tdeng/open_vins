@@ -128,7 +128,15 @@ bool StaticInitializer::initialize(double &timestamp, Eigen::MatrixXd &covarianc
   Eigen::Vector3d gravity_inG;
   gravity_inG << 0.0, 0.0, params.gravity_mag;
   Eigen::Vector3d bg = w_avg_2to1;
+  if (bg.norm() > 0.05) {
+    PRINT_WARNING(YELLOW "[init-s]: angular velocity too high (%.3f rad/s), clamping initial gyro bias to zero\n" RESET, bg.norm());
+    bg.setZero();
+  }
   Eigen::Vector3d ba = a_avg_2to1 - quat_2_Rot(q_GtoI) * gravity_inG;
+  if (ba.norm() > 0.3) {
+    PRINT_WARNING(YELLOW "[init-s]: accel discrepancy too high (%.3f m/s^2), clamping initial accel bias to zero\n" RESET, ba.norm());
+    ba.setZero();
+  }
 
   // Set our state variables
   timestamp = window_2to1.at(window_2to1.size() - 1).timestamp;
