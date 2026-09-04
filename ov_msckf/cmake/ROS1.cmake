@@ -142,6 +142,14 @@ install(TARGETS run_simulation
         RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
+add_executable(openvins_serial_runner src/openvins_serial_runner.cpp)
+target_link_libraries(openvins_serial_runner ov_msckf_lib ${thirdparty_libraries})
+install(TARGETS openvins_serial_runner
+        ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+        LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+        RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
+
 add_executable(test_sim_meas src/test_sim_meas.cpp)
 target_link_libraries(test_sim_meas ov_msckf_lib ${thirdparty_libraries})
 install(TARGETS test_sim_meas
